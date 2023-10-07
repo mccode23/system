@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import BaseComponent from "./Components/BaseComponent"
 
-function App() {
+export default function App() {
+  const [nodes, setNodes] = useState([{"type": "client", "parent": null, "children": [{"type": "server","coords": [600,300], "children": []}], coords: [300,300], qps: 100}]); // Array to store Ball components
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <>
+    {nodes.map((node,id)=>{
+      return <div key={id}>
+        <BaseComponent type={node.type} coords={node.coords} parent={node.parent} qps={node.qps} children={node.children}></BaseComponent>
+      </div>
+    })}
 
-export default App;
+    </>
+  )
+}

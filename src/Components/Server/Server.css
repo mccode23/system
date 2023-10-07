@@ -1,0 +1,10 @@
+.server-component-wrapper {
+    width: 100px;
+    height: 100px;
+    background-color: #A52A2A;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.16s linear, top 0.16s linear;
+  }
