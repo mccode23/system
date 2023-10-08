@@ -4,7 +4,6 @@ import Server from "./Server/Server"
 
 export default function BaseComponent({type,coords,parent,qps,children}) {
   function getBaseComponent() {
-    console.log("the type is ", type)
     switch (type) {
         case "client":
             return <Client coords={coords} parent={parent} qps={qps} children={children}></Client>
@@ -21,7 +20,7 @@ export default function BaseComponent({type,coords,parent,qps,children}) {
       {getBaseComponent()}
       {
       children.map((childComp, index) => (
-        <BaseComponent type={childComp.type} coords={childComp.coords} parent={childComp.parent} qps={qps} children={childComp.children}></BaseComponent>
+        <BaseComponent key={index} type={childComp.type} coords={childComp.coords} parent={childComp.parent} qps={qps} children={childComp.children}></BaseComponent>
       ))}
     </>
   )
