@@ -2,13 +2,33 @@ import React, { useEffect, useState } from 'react';
 import BaseComponent from "./Components/BaseComponent"
 
 export default function App() {
-  const [nodes, setNodes] = useState([{"type": "client", "parent": null, "children": [{"type": "server","coords": [600,300], "children": []}], coords: [300,300], qps: 100}]); // Array to store Ball components
+  const [componentList, setComponentList] = useState(
+    {
+      "0": {type: "client", coords: [300, 300], parentIds: [], childIds: ["1"]},
+      "1": {type: "server", coords: [600, 300], parentIds: ["0"], childIds: []},
+    }
+  );
+
+  const updateComponentIdMapping = (id,newData) => {
+     // Create a copy of the current state
+     const updatedData = { ...componentList };
+    
+     // Update the specific key's value
+     updatedData[id] = newData;
+ 
+     // Set the updated data as the new state
+     setComponentList(updatedData);
+  }
+
+  const getNodeInfo = (nodeKey) => {
+    return componentList[nodeKey]
+  }
 
   return (
     <>
-    {nodes.map((node,id)=>{
+    {Object.keys(componentList).map((nodeKey,id)=>{
       return <div key={id}>
-        <BaseComponent type={node.type} coords={node.coords} parent={node.parent} qps={node.qps} children={node.children}></BaseComponent>
+        <BaseComponent nodeKey={nodeKey} getNodeInfo={getNodeInfo}></BaseComponent>
       </div>
     })}
 

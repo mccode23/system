@@ -1,0 +1,9 @@
+.response-component-wrapper {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Adjust the values as needed */
+    border-radius: 50%;
+    position: absolute;
+    transition: left 0.16s linear, top 0.16s linear;
+  }

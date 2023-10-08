@@ -1,14 +1,15 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import Client from "./Client/Client"
 import Server from "./Server/Server"
 
-export default function BaseComponent({type,coords,parent,qps,children}) {
+export default function BaseComponent({nodeKey, getNodeInfo}) {
   function getBaseComponent() {
+    const {type, coords,childIds, parentIds} = getNodeInfo(nodeKey);
     switch (type) {
         case "client":
-            return <Client coords={coords} parent={parent} qps={qps} children={children}></Client>
+            return <Client nodeKey={nodeKey} coords={coords}  childIds={childIds} parentIds={parentIds} getNodeInfo={getNodeInfo}></Client>
         case "server":
-            return <Server coords={coords} parent={parent} qps={qps} children={children}></Server>
+            return <Server nodeKey={nodeKey} coords={coords} childIds={childIds} parentIds={parentIds} getNodeInfo={getNodeInfo}></Server>
         default:
             return null;
       }
@@ -19,8 +20,8 @@ export default function BaseComponent({type,coords,parent,qps,children}) {
     <>
       {getBaseComponent()}
       {
-      children.map((childComp, index) => (
-        <BaseComponent key={index} type={childComp.type} coords={childComp.coords} parent={childComp.parent} qps={qps} children={childComp.children}></BaseComponent>
+      getNodeInfo(nodeKey).childIds.map((childId, index) => (
+        <BaseComponent key={index} nodeKey={childId} getNodeInfo={getNodeInfo}></BaseComponent>
       ))}
     </>
   )

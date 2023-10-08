@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './Request.css';
+import './Response.css';
 
-const Request = ({ startX, startY, endX, endY, onRequestReachEnd, sender, reciever }) => {
+const Response = ({ startX, startY, endX, endY, onRequestReachEnd, sender, reciever,type }) => {
   const [position, setPosition] = useState({ left: startX, top: startY });
   const [display,setDisplay] = useState(true);
 
@@ -13,27 +13,27 @@ const Request = ({ startX, startY, endX, endY, onRequestReachEnd, sender, reciev
       const speed = 2; // Adjust the speed as needed
       const step = (speed / distance) * deltaX;
 
-      const animationInterval = setInterval(() => {
+      const animationInterval2 = setInterval(() => {
         const newPosition = { ...position };
         if (Math.abs(newPosition.left - endX) > Math.abs(step)) {
           newPosition.left += step;
           newPosition.top += (deltaY / distance) * step;
           setPosition(newPosition);
         } else {
-          clearInterval(animationInterval);
+          clearInterval(animationInterval2);
           setDisplay(false);
-          onRequestReachEnd(sender,reciever);
+        //   onRequestReachEnd(sender,reciever);
         }
       }, 16); // 60 frames per second
 
-      return () => clearInterval(animationInterval);
+      return () => clearInterval(animationInterval2);
     };
 
     const animationCleanup = animateRequest();
     return () => animationCleanup();
   }, [position, endX, endY, onRequestReachEnd]);
 
-  return display ? <div className="request-component-wrapper" style={{ left: `${position.left}px`, top: `${position.top}px` }}></div> : <></>;
+  return display ? <div className="response-component-wrapper" style={{ left: `${position.left}px`, top: `${position.top}px` }}></div> : <></>;
 };
 
-export default Request;
+export default Response;
