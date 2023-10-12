@@ -10,14 +10,15 @@ const Request = ({ startX, startY, endX, endY, onRequestReachEnd, sender, reciev
       const deltaX = endX - position.left;
       const deltaY = endY - position.top;
       const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-      const speed = 2; // Adjust the speed as needed
-      const step = (speed / distance) * deltaX;
+      const speed = 5; // Adjust the speed as needed
+      const step = (speed / distance) * Math.abs(deltaX);
+
 
       const animationInterval = setInterval(() => {
         const newPosition = { ...position };
         if (Math.abs(newPosition.left - endX) > Math.abs(step)) {
-          newPosition.left += step;
-          newPosition.top += (deltaY / distance) * step;
+          newPosition.left = position.left + (speed * deltaX) / distance;
+          newPosition.top = position.top + (speed * deltaY) / distance;
           setPosition(newPosition);
         } else {
           clearInterval(animationInterval);

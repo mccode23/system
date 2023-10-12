@@ -35,9 +35,9 @@ function Client({nodeKey,coords,childIds, parentIds,getNodeInfo}) {
       <Response
         key={uniqueKey}
         startX={node.coords[0]}
-        startY={node.coords[1]+100}
+        startY={node.coords[1]}
         endX={endX}
-        endY={endY+100}
+        endY={endY}
         sender={nodeKey}
         reciever={childIds[index]}
         type={"response"}

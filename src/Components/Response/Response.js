@@ -16,9 +16,9 @@ const Response = ({ startX, startY, endX, endY, onRequestReachEnd, sender, recie
       const animationInterval2 = setInterval(() => {
         const newPosition = { ...position };
         if (Math.abs(newPosition.left - endX) > Math.abs(step)) {
-          newPosition.left += step;
-          newPosition.top += (deltaY / distance) * step;
-          setPosition(newPosition);
+            newPosition.left = position.left + (speed * deltaX) / distance;
+            newPosition.top = position.top + (speed * deltaY) / distance;
+        setPosition(newPosition);
         } else {
           clearInterval(animationInterval2);
           setDisplay(false);

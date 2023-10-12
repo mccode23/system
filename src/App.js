@@ -4,8 +4,11 @@ import BaseComponent from "./Components/BaseComponent"
 export default function App() {
   const [componentList, setComponentList] = useState(
     {
-      "0": {type: "client", coords: [300, 300], parentIds: [], childIds: ["1"]},
-      "1": {type: "server", coords: [600, 300], parentIds: ["0"], childIds: []},
+      "0": {type: "client", coords: [300, 300], parentIds: [], childIds: ["1","2","3"]},
+      "1": {type: "server", coords: [100, 100], parentIds: ["0"], childIds: []},
+      "2": {type: "server", coords: [900, 500], parentIds: ["0"], childIds: []},
+      "3": {type: "server", coords: [100, 900], parentIds: ["0"], childIds: []},
+      "4": {type: "server", coords: [900, 500], parentIds: ["0"], childIds: []},
     }
   );
 
