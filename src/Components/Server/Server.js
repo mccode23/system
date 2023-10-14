@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Server.css';
 
-function Server({coords,parent,qps,children}) {
+function Server({coords,parent,qps,childIds}) {
   const [x,y] = [coords[0],coords[1]];
   return (
     <>

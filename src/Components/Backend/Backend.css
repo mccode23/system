@@ -1,0 +1,10 @@
+.backend-component-wrapper {
+    width: 100px;
+    height: 100px;
+    background-color: #DAA520;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* transition: left 0.16s linear, top 0.16s linear; */
+  }

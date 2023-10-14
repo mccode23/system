@@ -22,7 +22,7 @@ const Response = ({ startX, startY, endX, endY, onRequestReachEnd, sender, recie
         } else {
           clearInterval(animationInterval2);
           setDisplay(false);
-        //   onRequestReachEnd(sender,reciever);
+          onRequestReachEnd(sender,reciever, "response");
         }
       }, 16); // 60 frames per second
 

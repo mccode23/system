@@ -1,7 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import './Backend.css';
 
-export default function Backend() {
+function Backend({coords,parent,qps,children}) {
+  const [x,y] = [coords[0],coords[1]];
   return (
-    <div>Backend</div>
-  )
+    <>
+      <div className="backend-component-wrapper" style={{ left: `${x}px`, top: `${y}px` }}>
+      Backend
+      </div>
+    </>
+    
+  );
 }
+
+export default Backend;
