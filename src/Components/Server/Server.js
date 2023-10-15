@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import useShowAnimatedRequest from "../hooks/hooks"
 import './Server.css';
 
-function Server({coords,parent,qps,childIds}) {
-  const [x,y] = [coords[0],coords[1]];
+function Server({nodeKey,getNodeInfo,liveTraffic}) {
+  const animatedRequests = useShowAnimatedRequest(liveTraffic,nodeKey,getNodeInfo)
   return (
     <>
-      <div className="server-component-wrapper" style={{ left: `${x}px`, top: `${y}px` }}>
+      <div className="server-component-wrapper" style={{ left: `${getNodeInfo(nodeKey).coords[0]}px`, top: `${getNodeInfo(nodeKey).coords[1]}px` }}>
       Server
+      {animatedRequests}
       </div>
     </>
     

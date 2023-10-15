@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Request.css';
 
-const Request = ({ startX, startY, endX, endY, onRequestReachEnd, sender, reciever }) => {
+const Request = ({ requestId, startX, startY, endX, endY, onRequestReachEnd, sender, reciever }) => {
   const [position, setPosition] = useState({ left: startX, top: startY });
   const [display,setDisplay] = useState(true);
-
   useEffect(() => {
     const animateRequest = () => {
       const deltaX = endX - position.left;
@@ -23,7 +22,7 @@ const Request = ({ startX, startY, endX, endY, onRequestReachEnd, sender, reciev
         } else {
           clearInterval(animationInterval);
           setDisplay(false);
-          onRequestReachEnd(sender,reciever, "request");
+          onRequestReachEnd(sender,reciever, "request",requestId);
         }
       }, 16); // 60 frames per second
 

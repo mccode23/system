@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from '../slices/counterSlice'
+import trafficReducer from '../slices/trafficSlice'
 
 export default configureStore({
   reducer: {
-    counter: counterReducer
+    traffic: trafficReducer
   }
 })
