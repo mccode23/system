@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react';
 import Request from '../Request/Request';
 import { useDispatch } from "react-redux";
-import { sendRequest } from "../../Redux/slices/trafficSlice";
+import { sendRequest, recievedRequest } from "../../Redux/slices/trafficSlice";
 import { generateUniqueId } from '../utils/utils';
 
 const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
@@ -20,11 +20,7 @@ const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
           currRequests[downstreamNode] = {}
         }
         let lastRequestId = liveTraffic[downstreamNode][0]
-        if(lastRequestId in currRequests[downstreamNode] == false) {
-
-        if(nodeKey == "1") {
-            console.log("send req from ", getNodeInfo(nodeKey).coords[0], getNodeInfo(nodeKey).coords[1], " to ", getNodeInfo(downstreamNode).coords[0],getNodeInfo(downstreamNode).coords[1])
-        }
+        if(lastRequestId != -1 && lastRequestId in currRequests[downstreamNode] == false) {
 
           let requestObject = <Request
           key={lastRequestId}
@@ -58,7 +54,7 @@ const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
     return list
   }
 
-  const handleRequestReachedEnd = (from,to, type) => {
+  const handleRequestReachedEnd = (from,to, type, requestId) => {
     if(type == "request") {
         const fromNode = getNodeInfo(from)
         const toNode = getNodeInfo(to)
@@ -70,7 +66,7 @@ const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
         } else {
             // more nodes to travel too
             const child = toNode.childIds[0] // some way to determine which node gets request ie round robbin
-            // remove previousRequestId from the state todo
+            dispatch(recievedRequest({"from": to, "to": child, "type": "request", requestKey: requestId}));
             dispatch(sendRequest({"from": to, "to": child, "type": "request", requestKey: generateUniqueId()}));
             
             // add new request to state

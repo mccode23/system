@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './Backend.css';
 
-function Backend({coords,parent,qps,children}) {
-  const [x,y] = [coords[0],coords[1]];
+function Backend({nodeKey,getNodeInfo,liveTraffic}) {
   return (
     <>
-      <div className="backend-component-wrapper" style={{ left: `${x}px`, top: `${y}px` }}>
+      <div className="backend-component-wrapper" style={{ left: `${getNodeInfo(nodeKey).coords[0]}px`, top: `${getNodeInfo(nodeKey).coords[1]}px` }}>
       Backend
       </div>
     </>

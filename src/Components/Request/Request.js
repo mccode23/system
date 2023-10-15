@@ -9,7 +9,7 @@ const Request = ({ requestId, startX, startY, endX, endY, onRequestReachEnd, sen
       const deltaX = endX - position.left;
       const deltaY = endY - position.top;
       const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-      const speed = 5; // Adjust the speed as needed
+      const speed = 1; // Adjust the speed as needed
       const step = (speed / distance) * Math.abs(deltaX);
 
 

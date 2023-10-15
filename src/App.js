@@ -11,21 +11,22 @@ export default function App() {
     {
       "0": {type: "client", coords: [100, 100], parentIds: [], childIds: ["1"]},
       "1": {type: "server", coords: [500, 100], parentIds: ["0"], childIds: ["2"]},
-      "2": {type: "backend", coords: [900, 100], parentIds: ["1"], childIds: []},
+      "2": {type: "backend", coords: [700, 100], parentIds: ["1"], childIds: []},
     }
   );
 
   const liveTraffic = useSelector(state => state.traffic.traffic)
+  console.log(liveTraffic)
 
   function getNodeComponent(nodeKey) {
     const {type, coords,childIds, parentIds} = getNodeInfo(nodeKey);
     switch (type) {
         case "client":
-            return <Client nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} coords={coords}  childIds={childIds} parentIds={parentIds} getNodeInfo={getNodeInfo}></Client>
+            return <Client nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} getNodeInfo={getNodeInfo}></Client>
         case "server":
-            return <Server nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} coords={coords} childIds={childIds} parentIds={parentIds} getNodeInfo={getNodeInfo}></Server>
+            return <Server nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} getNodeInfo={getNodeInfo}></Server>
         case "backend":
-          return <Backend nodeKey={nodeKey} coords={coords} childIds={childIds} parentIds={parentIds} getNodeInfo={getNodeInfo}></Backend>
+          return <Backend nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} getNodeInfo={getNodeInfo}></Backend>
         default:
             return null;
       }

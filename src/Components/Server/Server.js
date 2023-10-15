@@ -8,8 +8,8 @@ function Server({nodeKey,getNodeInfo,liveTraffic}) {
     <>
       <div className="server-component-wrapper" style={{ left: `${getNodeInfo(nodeKey).coords[0]}px`, top: `${getNodeInfo(nodeKey).coords[1]}px` }}>
       Server
-      {animatedRequests}
       </div>
+      {animatedRequests}
     </>
     
   );
