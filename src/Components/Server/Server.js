@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useShowAnimatedRequest from "../hooks/hooks"
 import './Server.css';
 

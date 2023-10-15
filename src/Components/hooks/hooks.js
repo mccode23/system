@@ -12,31 +12,30 @@ const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
   // send animated request
   useEffect(() => {
     if(liveTraffic != undefined) {
-      let currRequests = requests
       let downstreamNodes = Object.keys(liveTraffic)
+      let newRequests = requests
       for (let index = 0; index < downstreamNodes.length; index++) {
-        const downstreamNode = downstreamNodes[index];
-        if(downstreamNode in currRequests === false) {
-          currRequests[downstreamNode] = {}
+        const downstreamNode = downstreamNodes[index]
+        const downstreamNodeRequestIds = liveTraffic[downstreamNode]
+        const downstreamNodeMostRecentRequestId = downstreamNodeRequestIds[downstreamNodeRequestIds.length-1]
+        if(newRequests[downstreamNode] == undefined) {
+            newRequests[downstreamNode] = []
         }
-        let lastRequestId = liveTraffic[downstreamNode][0]
-        if(lastRequestId != -1 && lastRequestId in currRequests[downstreamNode] == false) {
 
-          let requestObject = <Request
-          key={lastRequestId}
-          requestId={lastRequestId}
-          startX={getNodeInfo(nodeKey).coords[0]}
-          startY={getNodeInfo(nodeKey).coords[1]}
-          endX={getNodeInfo(downstreamNode).coords[0]}
-          endY={getNodeInfo(downstreamNode).coords[1]}
-          sender={nodeKey}
-          reciever={downstreamNode}
-          onRequestReachEnd={handleRequestReachedEnd}
+        let requestObject = <Request
+        key={downstreamNodeMostRecentRequestId}
+        requestId={downstreamNodeMostRecentRequestId}
+        startX={getNodeInfo(nodeKey).coords[0]}
+        startY={getNodeInfo(nodeKey).coords[1]}
+        endX={getNodeInfo(downstreamNode).coords[0]}
+        endY={getNodeInfo(downstreamNode).coords[1]}
+        sender={nodeKey}
+        reciever={downstreamNode}
+        onRequestReachEnd={handleRequestReachedEnd}
         />
-          currRequests[downstreamNode][lastRequestId] = requestObject
+        newRequests[downstreamNode].push(requestObject)
         }
-      }
-      setRequests({...requests,...currRequests})
+      setRequests({...requests,...newRequests})
     }
   }, [liveTraffic])
 

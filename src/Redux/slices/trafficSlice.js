@@ -8,39 +8,32 @@ export const trafficSlice = createSlice({
   reducers: {
     sendRequest: (state,action) => {
       const {from,to,requestKey} = action.payload
-      let currRequests = {}
+      let currRequests = []
       if(state.traffic.hasOwnProperty(from) && state.traffic[from].hasOwnProperty(to)) {
-        currRequests = state.traffic[from][to][1]
+        currRequests = state.traffic[from][to]
       }
-      currRequests[requestKey] = true
+      currRequests.push(requestKey)
 
       state.traffic = {
         ...state.traffic,
         [from]: {
           ...state.traffic[from],
-          [to]: [requestKey, currRequests],
+          [to]: currRequests,
         },
       };
     },
     recievedRequest: (state,action) => {
-      const {from,to,requestKey} = action.payload
-      const newRequestKey = state.traffic[from][to][0]
+      const {from,to} = action.payload
       if(state.traffic.hasOwnProperty(from) && state.traffic[from].hasOwnProperty(to)) {
-        if(newRequestKey == requestKey) {
-          newRequestKey = -1
-        }
-
+        let newArray = state.traffic[from][to].slice(1)
         state.traffic = {
           ...state.traffic,
           [from]: {
             ...state.traffic[from],
-            [to]: [requestKey, currRequests],
+            [to]: newArray,
           },
         };
-      console.log(test)
       }
-      
-      
     },
   }
 })
