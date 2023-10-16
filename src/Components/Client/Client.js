@@ -16,7 +16,7 @@ function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
 
   const initClientRequests = () => {
     dispatch(sendRequest({"from": nodeKey, "to": getNodeInfo(nodeKey).childIds[0], "type": "request"}));
-    setTimeout(initClientRequests, 7000); // 1 second
+    setTimeout(initClientRequests, 1000); // 1 second
   };
 
   return (
