@@ -28,7 +28,21 @@ export const trafficSlice = createSlice({
         }
       };
       } else {
-        // response todoo
+        let currResponses = []
+      if(state.traffic.responses.hasOwnProperty(from) && state.traffic.responses[from].hasOwnProperty(to)) {
+        currResponses = state.traffic.responses[from][to]
+      }
+      currResponses.push(requestKey)
+      state.traffic = {
+        ...state.traffic,
+        responses: {
+          ...state.traffic.responses,
+          [from]: {
+            ...state.traffic.responses[from],
+            [to]: currResponses,
+          },
+        }
+      };
       }
       
     },

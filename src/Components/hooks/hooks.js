@@ -59,8 +59,8 @@ const useShowAnimatedRequest = (liveRequests,nodeKey, getNodeInfo) => {
         const child = toNode.childIds[0] // some way to determine which node gets request ie round robbin
         dispatch(recievedRequest({"from": to, "to": child, "type": "request", requestKey: requestId}));
         if(toNode.childIds.length === 0) {
-            // diispatch an actinon tthat wlil updatte liveTraffic
-            // last noode inn the list, retturn as a response (send reponse and sett type to response)
+            // start response flow
+            dispatch(sendRequest({"from": to, "to": from, "type": "response", requestKey: generateUniqueId()}));
         } else {
             // more nodes to travel to
             dispatch(sendRequest({"from": to, "to": child, "type": "request", requestKey: generateUniqueId()}));

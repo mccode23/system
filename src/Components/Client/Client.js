@@ -5,7 +5,7 @@ import { sendRequest } from "../../Redux/slices/trafficSlice";
 import useShowAnimatedRequest from "../hooks/hooks";
 import { generateUniqueId } from '../utils/utils';
 
-function Client({nodeKey,getNodeInfo,liveRequests}) {
+function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
   const dispatch = useDispatch(); 
 
   useEffect(() => {
@@ -13,6 +13,7 @@ function Client({nodeKey,getNodeInfo,liveRequests}) {
   }, []);
 
   const animatedRequests = useShowAnimatedRequest(liveRequests,nodeKey,getNodeInfo)
+  // const animatedResponses = useShowAnimatedRequest(liveRequests,nodeKey,getNodeInfo)
 
   const initClientRequests = () => {
     dispatch(sendRequest({"from": nodeKey, "to": getNodeInfo(nodeKey).childIds[0], "type": "request", requestKey: generateUniqueId()}));

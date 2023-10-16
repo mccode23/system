@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Client from "./Components/Client/Client";
 import Server from "./Components/Server/Server";
 import Backend from "./Components/Backend/Backend";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function App() {
   // const trafficCounts = useSelector((state) => state.traffic.traffic);
-  const dispatch = useDispatch();
   const [componentList, setComponentList] = useState(
     {
       "0": {type: "client", coords: [100, 100], parentIds: [], childIds: ["1"]},
@@ -17,16 +16,17 @@ export default function App() {
   );
 
   const liveRequests = useSelector(state => state.traffic.traffic.requests)
+  const liveResponses = useSelector(state => state.traffic.traffic.responses)
 
   function getNodeComponent(nodeKey) {
-    const {type, coords,childIds, parentIds} = getNodeInfo(nodeKey);
+    const {type} = getNodeInfo(nodeKey);
     switch (type) {
         case "client":
-            return <Client nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} getNodeInfo={getNodeInfo}></Client>
+            return <Client nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo}></Client>
         case "server":
-            return <Server nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} getNodeInfo={getNodeInfo}></Server>
+            return <Server nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo}></Server>
         case "backend":
-          return <Backend nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} getNodeInfo={getNodeInfo}></Backend>
+          return <Backend nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo}></Backend>
         default:
             return null;
       }
