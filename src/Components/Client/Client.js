@@ -15,7 +15,7 @@ function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
   const [animatedRequests,animatedResponses] = useShowAnimatedRequest(nodeKey,getNodeInfo,liveRequests, liveResponses)
 
   const initClientRequests = () => {
-    dispatch(sendRequest({"from": nodeKey, "to": getNodeInfo(nodeKey).childIds[0], "type": "request", requestKey: generateUniqueId()}));
+    dispatch(sendRequest({"from": nodeKey, "to": getNodeInfo(nodeKey).childIds[0], "type": "request"}));
     setTimeout(initClientRequests, 7000); // 1 second
   };
 

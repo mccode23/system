@@ -22,7 +22,7 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
                     newRequests[downstreamNode] = []
                 }
         for (let y = 0; y < downstreamNodeRequests.length; y++) {
-            const id = `req-${downstreamNodeRequests[y]}`;
+            let id = downstreamNodeRequests[y]
             let requestObject = <Request
             key={id}
             requestId={id}
@@ -58,7 +58,7 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
             newResponses[upstreamNode] = []
                 }
         for (let y = 0; y < upstreamNodeRequests.length; y++) {
-            const id = `resp-${upstreamNodeRequests[y]}`;
+            const id = upstreamNodeRequests[y];
             let requestObject = <Request
             key={id}
             requestId={id}
@@ -105,25 +105,26 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
     return [requestList,responseList]
   }
 
-  const handleRequestReachedEnd = (from,to, type, requestId) => {
+  const handleRequestReachedEnd = (from,to, type) => {
     const toNode = getNodeInfo(to)
-    dispatch(recievedRequest({"from": from, "to": to, "type": "request", requestKey: requestId}));
     if(type == "request") {
+        dispatch(recievedRequest({"from": from, "to": to, "type": "request"}));
         if(toNode.childIds.length === 0) {
             // start response flow
-            dispatch(sendRequest({"from": to, "to": from, "type": "response", requestKey: requestId}));
+            dispatch(sendRequest({"from": to, "to": from, "type": "response"}));
         } else {
             const child = toNode.childIds[0] // some way to determine which node gets request ie round robbin
             // more nodes to travel to
-            dispatch(sendRequest({"from": to, "to": child, "type": "request", requestKey: requestId}));
+            dispatch(sendRequest({"from": to, "to": child, "type": "request"}));
         }
     } else {
+        dispatch(recievedRequest({"from": from, "to": to, "type": "response"}));
         if(toNode.parentIds.length === 0) {
             console.log("thatts tthe end")
         } else {
             console.log("go to my parent")
             const parent = toNode.parentIds[0] // some way to determine which node gets request ie pass in parent path
-            dispatch(sendRequest({"from": to, "to": parent, "type": "response", requestKey: requestId}));
+            dispatch(sendRequest({"from": to, "to": parent, "type": "response"}));
         }
     }
   };
