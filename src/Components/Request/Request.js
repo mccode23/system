@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Request.css';
 
-const Request = ({ requestId, startX, startY, endX, endY, onRequestReachEnd, sender, reciever }) => {
+const Request = ({ requestId, startX, startY, endX, endY, onRequestReachEnd, sender, reciever,type }) => {
   const [position, setPosition] = useState({ left: startX, top: startY });
   const [display,setDisplay] = useState(true);
   useEffect(() => {
@@ -22,7 +22,7 @@ const Request = ({ requestId, startX, startY, endX, endY, onRequestReachEnd, sen
         } else {
           clearInterval(animationInterval);
           setDisplay(false);
-          onRequestReachEnd(sender,reciever, "request",requestId);
+          onRequestReachEnd(sender,reciever, type,requestId);
         }
       }, 16); // 60 frames per second
 
@@ -33,7 +33,7 @@ const Request = ({ requestId, startX, startY, endX, endY, onRequestReachEnd, sen
     return () => animationCleanup();
   }, [position, endX, endY, onRequestReachEnd]);
 
-  return display ? <div className="request-component-wrapper" style={{ left: `${position.left}px`, top: `${position.top}px` }}></div> : <></>;
+  return display ? <div className={type === "request" ? "request-component-wrapper" : "response-component-wrapper"} style={{ left: `${position.left}px`, top: `${position.top}px` }}></div> : <></>;
 };
 
 export default Request;

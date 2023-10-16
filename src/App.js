@@ -10,13 +10,15 @@ export default function App() {
     {
       "0": {type: "client", coords: [100, 100], parentIds: [], childIds: ["1"]},
       "1": {type: "server", coords: [500, 100], parentIds: ["0"], childIds: ["2"]},
-      "2": {type: "backend", coords: [700, 100], parentIds: ["1"], childIds: ["3"]},
-      "3": {type: "backend", coords: [900, 100], parentIds: ["3"], childIds: []},
+      "2": {type: "backend", coords: [700, 100], parentIds: ["1"], childIds: []},
+      // "3": {type: "backend", coords: [900, 100], parentIds: ["3"], childIds: []},
     }
   );
 
   const liveRequests = useSelector(state => state.traffic.traffic.requests)
   const liveResponses = useSelector(state => state.traffic.traffic.responses)
+
+  
 
   function getNodeComponent(nodeKey) {
     const {type} = getNodeInfo(nodeKey);

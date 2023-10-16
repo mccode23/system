@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { sendRequest, recievedRequest } from "../../Redux/slices/trafficSlice";
 import { generateUniqueId } from '../utils/utils';
 
-const useShowAnimatedRequest = (liveRequests,nodeKey, getNodeInfo) => {
+const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses) => {
   const dispatch = useDispatch();
   const [requests, setRequests] = useState({}); // request state for component
   const [responses, setResponses] = useState({}); // response state for component
@@ -13,66 +13,123 @@ const useShowAnimatedRequest = (liveRequests,nodeKey, getNodeInfo) => {
   useEffect(() => {
     if(liveRequests != undefined) {
       let downstreamNodes = Object.keys(liveRequests)
-      let newRequests = requests
+      let newRequests = []
+
       for (let index = 0; index < downstreamNodes.length; index++) {
         const downstreamNode = downstreamNodes[index]
-        const downstreamNodeRequestIds = liveRequests[downstreamNode]
-        const downstreamNodeMostRecentRequestId = downstreamNodeRequestIds[downstreamNodeRequestIds.length-1]
+        const downstreamNodeRequests = liveRequests[downstreamNode]
         if(newRequests[downstreamNode] == undefined) {
-            newRequests[downstreamNode] = []
-        }
+                    newRequests[downstreamNode] = []
+                }
+        for (let y = 0; y < downstreamNodeRequests.length; y++) {
+            const id = `req-${downstreamNodeRequests[y]}`;
+            let requestObject = <Request
+            key={id}
+            requestId={id}
+            startX={getNodeInfo(nodeKey).coords[0]}
+            startY={getNodeInfo(nodeKey).coords[1]}
+            endX={getNodeInfo(downstreamNode).coords[0]}
+            endY={getNodeInfo(downstreamNode).coords[1]}
+            sender={nodeKey}
+            reciever={downstreamNode}
+            onRequestReachEnd={handleRequestReachedEnd}
+            type="request"
+            />
+            newRequests[downstreamNode].push(requestObject)
+            }
+        } 
 
-        let requestObject = <Request
-        key={downstreamNodeMostRecentRequestId}
-        requestId={downstreamNodeMostRecentRequestId}
-        startX={getNodeInfo(nodeKey).coords[0]}
-        startY={getNodeInfo(nodeKey).coords[1]}
-        endX={getNodeInfo(downstreamNode).coords[0]}
-        endY={getNodeInfo(downstreamNode).coords[1]}
-        sender={nodeKey}
-        reciever={downstreamNode}
-        onRequestReachEnd={handleRequestReachedEnd}
-        />
-        newRequests[downstreamNode].push(requestObject)
-        }
-      setRequests({...requests,...newRequests})
+        
+        
+        setRequests({...requests,...newRequests})
     }
   }, [liveRequests])
 
-  const renderRequests = () => {
-    const list = []
+  // send animated response
+  useEffect(() => {
+    if(liveResponses != undefined) {
+      let upstreamNodes = Object.keys(liveResponses)
+      let newResponses = []
+
+      for (let index = 0; index < upstreamNodes.length; index++) {
+        const upstreamNode = upstreamNodes[index]
+        const upstreamNodeRequests = liveResponses[upstreamNode]
+        if(newResponses[upstreamNode] == undefined) {
+            newResponses[upstreamNode] = []
+                }
+        for (let y = 0; y < upstreamNodeRequests.length; y++) {
+            const id = `resp-${upstreamNodeRequests[y]}`;
+            let requestObject = <Request
+            key={id}
+            requestId={id}
+            startX={getNodeInfo(nodeKey).coords[0]}
+            startY={getNodeInfo(nodeKey).coords[1]}
+            endX={getNodeInfo(upstreamNode).coords[0]}
+            endY={getNodeInfo(upstreamNode).coords[1]}
+            sender={nodeKey}
+            reciever={upstreamNode}
+            onRequestReachEnd={handleRequestReachedEnd}
+            type="response"
+            />
+            newResponses[upstreamNode].push(requestObject)
+            }
+        } 
+
+        
+        
+        setResponses({...responses,...newResponses})
+    }
+  }, [liveResponses])
+
+  const renderRequestsAndResponses = () => {
+    const requestList = []
+    const responseList = []
     if(requests !== undefined) {
       for (let downstreamNode in requests) {
         for(let request in requests[downstreamNode]) {
-          list.push(requests[downstreamNode][request])
+            requestList.push(requests[downstreamNode][request])
         }
       }
       
     }
+
+    if(responses !== undefined) {
+        for (let upstreamNode in responses) {
+          for(let request in responses[upstreamNode]) {
+            responseList.push(responses[upstreamNode][request])
+          }
+        }
+        
+      }
     
-    return list
+    return [requestList,responseList]
   }
 
   const handleRequestReachedEnd = (from,to, type, requestId) => {
+    const toNode = getNodeInfo(to)
+    dispatch(recievedRequest({"from": from, "to": to, "type": "request", requestKey: requestId}));
     if(type == "request") {
-        const toNode = getNodeInfo(to)
-        const child = toNode.childIds[0] // some way to determine which node gets request ie round robbin
-        dispatch(recievedRequest({"from": to, "to": child, "type": "request", requestKey: requestId}));
         if(toNode.childIds.length === 0) {
             // start response flow
-            dispatch(sendRequest({"from": to, "to": from, "type": "response", requestKey: generateUniqueId()}));
+            dispatch(sendRequest({"from": to, "to": from, "type": "response", requestKey: requestId}));
         } else {
+            const child = toNode.childIds[0] // some way to determine which node gets request ie round robbin
             // more nodes to travel to
-            dispatch(sendRequest({"from": to, "to": child, "type": "request", requestKey: generateUniqueId()}));
+            dispatch(sendRequest({"from": to, "to": child, "type": "request", requestKey: requestId}));
         }
     } else {
-        // response
-        console.log("response")
+        if(toNode.parentIds.length === 0) {
+            console.log("thatts tthe end")
+        } else {
+            console.log("go to my parent")
+            const parent = toNode.parentIds[0] // some way to determine which node gets request ie pass in parent path
+            dispatch(sendRequest({"from": to, "to": parent, "type": "response", requestKey: requestId}));
+        }
     }
   };
 
   return (
-    renderRequests()
+    renderRequestsAndResponses()
   )
 
 };

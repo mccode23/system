@@ -12,12 +12,11 @@ function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
     initClientRequests();
   }, []);
 
-  const animatedRequests = useShowAnimatedRequest(liveRequests,nodeKey,getNodeInfo)
-  // const animatedResponses = useShowAnimatedRequest(liveRequests,nodeKey,getNodeInfo)
+  const [animatedRequests,animatedResponses] = useShowAnimatedRequest(nodeKey,getNodeInfo,liveRequests, liveResponses)
 
   const initClientRequests = () => {
     dispatch(sendRequest({"from": nodeKey, "to": getNodeInfo(nodeKey).childIds[0], "type": "request", requestKey: generateUniqueId()}));
-    setTimeout(initClientRequests, 5000); // 1 second
+    setTimeout(initClientRequests, 7000); // 1 second
   };
 
   return (
@@ -26,6 +25,7 @@ function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
         Client
       </div>
       {animatedRequests}
+      {animatedResponses}
     </>
     
   );

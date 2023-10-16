@@ -28,7 +28,7 @@ export const trafficSlice = createSlice({
         }
       };
       } else {
-        let currResponses = []
+      let currResponses = []
       if(state.traffic.responses.hasOwnProperty(from) && state.traffic.responses[from].hasOwnProperty(to)) {
         currResponses = state.traffic.responses[from][to]
       }
@@ -49,7 +49,8 @@ export const trafficSlice = createSlice({
     recievedRequest: (state,action) => {
       const {from,to} = action.payload
       if(state.traffic.requests.hasOwnProperty(from) && state.traffic.requests[from].hasOwnProperty(to)) {
-        let newArray = state.traffic.requests[from][to].slice(1)
+        if(state.traffic.requests[from][to].length > 0) {
+          let newArray = state.traffic.requests[from][to].slice(1)
         state.traffic = {
           ...state.traffic,
           requests: {
@@ -60,6 +61,12 @@ export const trafficSlice = createSlice({
             },
           }
         };
+        } else {
+          const newTraffic = {...state.traffic}
+          console.log("newTraffic")
+          delete newTraffic.requests[from][to]
+          state.traffic = newTraffic
+        }
       }
     },
   }
