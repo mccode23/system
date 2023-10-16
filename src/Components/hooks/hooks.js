@@ -4,19 +4,19 @@ import { useDispatch } from "react-redux";
 import { sendRequest, recievedRequest } from "../../Redux/slices/trafficSlice";
 import { generateUniqueId } from '../utils/utils';
 
-const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
+const useShowAnimatedRequest = (liveRequests,nodeKey, getNodeInfo) => {
   const dispatch = useDispatch();
   const [requests, setRequests] = useState({}); // request state for component
   const [responses, setResponses] = useState({}); // response state for component
   
   // send animated request
   useEffect(() => {
-    if(liveTraffic != undefined) {
-      let downstreamNodes = Object.keys(liveTraffic)
+    if(liveRequests != undefined) {
+      let downstreamNodes = Object.keys(liveRequests)
       let newRequests = requests
       for (let index = 0; index < downstreamNodes.length; index++) {
         const downstreamNode = downstreamNodes[index]
-        const downstreamNodeRequestIds = liveTraffic[downstreamNode]
+        const downstreamNodeRequestIds = liveRequests[downstreamNode]
         const downstreamNodeMostRecentRequestId = downstreamNodeRequestIds[downstreamNodeRequestIds.length-1]
         if(newRequests[downstreamNode] == undefined) {
             newRequests[downstreamNode] = []
@@ -37,7 +37,7 @@ const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
         }
       setRequests({...requests,...newRequests})
     }
-  }, [liveTraffic])
+  }, [liveRequests])
 
   const renderRequests = () => {
     const list = []
@@ -55,20 +55,15 @@ const useShowAnimatedRequest = (liveTraffic,nodeKey, getNodeInfo) => {
 
   const handleRequestReachedEnd = (from,to, type, requestId) => {
     if(type == "request") {
-        const fromNode = getNodeInfo(from)
         const toNode = getNodeInfo(to)
+        const child = toNode.childIds[0] // some way to determine which node gets request ie round robbin
+        dispatch(recievedRequest({"from": to, "to": child, "type": "request", requestKey: requestId}));
         if(toNode.childIds.length === 0) {
             // diispatch an actinon tthat wlil updatte liveTraffic
             // last noode inn the list, retturn as a response (send reponse and sett type to response)
-            // also remooove the request from reduex and component state
-            // console.log("time to send a resposne")
         } else {
-            // more nodes to travel too
-            const child = toNode.childIds[0] // some way to determine which node gets request ie round robbin
-            dispatch(recievedRequest({"from": to, "to": child, "type": "request", requestKey: requestId}));
+            // more nodes to travel to
             dispatch(sendRequest({"from": to, "to": child, "type": "request", requestKey: generateUniqueId()}));
-            
-            // add new request to state
         }
     } else {
         // response

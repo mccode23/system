@@ -3,35 +3,48 @@ import { createSlice } from '@reduxjs/toolkit'
 export const trafficSlice = createSlice({
   name: 'traffic',
   initialState: {
-    traffic: {} 
+    traffic: {
+      requests: {},
+      responses: {}
+    } 
   },
   reducers: {
     sendRequest: (state,action) => {
-      const {from,to,requestKey} = action.payload
+      const {from,to,requestKey,type} = action.payload
+      if(type === "request") {
       let currRequests = []
-      if(state.traffic.hasOwnProperty(from) && state.traffic[from].hasOwnProperty(to)) {
-        currRequests = state.traffic[from][to]
+      if(state.traffic.requests.hasOwnProperty(from) && state.traffic.requests[from].hasOwnProperty(to)) {
+        currRequests = state.traffic.requests[from][to]
       }
       currRequests.push(requestKey)
-
       state.traffic = {
         ...state.traffic,
-        [from]: {
-          ...state.traffic[from],
-          [to]: currRequests,
-        },
+        requests: {
+          ...state.traffic.requests,
+          [from]: {
+            ...state.traffic.requests[from],
+            [to]: currRequests,
+          },
+        }
       };
+      } else {
+        // response todoo
+      }
+      
     },
     recievedRequest: (state,action) => {
       const {from,to} = action.payload
-      if(state.traffic.hasOwnProperty(from) && state.traffic[from].hasOwnProperty(to)) {
-        let newArray = state.traffic[from][to].slice(1)
+      if(state.traffic.requests.hasOwnProperty(from) && state.traffic.requests[from].hasOwnProperty(to)) {
+        let newArray = state.traffic.requests[from][to].slice(1)
         state.traffic = {
           ...state.traffic,
-          [from]: {
-            ...state.traffic[from],
-            [to]: newArray,
-          },
+          requests: {
+            ...state.traffic.requests,
+            [from]: {
+              ...state.traffic.requests[from],
+              [to]: newArray,
+            },
+          }
         };
       }
     },

@@ -16,17 +16,17 @@ export default function App() {
     }
   );
 
-  const liveTraffic = useSelector(state => state.traffic.traffic)
+  const liveRequests = useSelector(state => state.traffic.traffic.requests)
 
   function getNodeComponent(nodeKey) {
     const {type, coords,childIds, parentIds} = getNodeInfo(nodeKey);
     switch (type) {
         case "client":
-            return <Client nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} getNodeInfo={getNodeInfo}></Client>
+            return <Client nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} getNodeInfo={getNodeInfo}></Client>
         case "server":
-            return <Server nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} getNodeInfo={getNodeInfo}></Server>
+            return <Server nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} getNodeInfo={getNodeInfo}></Server>
         case "backend":
-          return <Backend nodeKey={nodeKey} liveTraffic={liveTraffic[nodeKey]} getNodeInfo={getNodeInfo}></Backend>
+          return <Backend nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} getNodeInfo={getNodeInfo}></Backend>
         default:
             return null;
       }
