@@ -22,14 +22,19 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
                     newRequests[downstreamNode] = []
                 }
         for (let y = 0; y < downstreamNodeRequests.length; y++) {
+            let startNode = getNodeInfo(nodeKey)
+            let endNode = getNodeInfo(downstreamNode)
+            let [startX,startY,endX,endY] = [startNode.coords[0],startNode.coords[1],endNode.coords[0],endNode.coords[1]]
+            let horizontalDelta = startX === endX ? 0 : 30
+            let verticalDelta = startY === endY ? 0 : 30
             let id = downstreamNodeRequests[y]
             let requestObject = <Request
             key={id}
             requestId={id}
-            startX={getNodeInfo(nodeKey).coords[0]}
-            startY={getNodeInfo(nodeKey).coords[1]+30}
-            endX={getNodeInfo(downstreamNode).coords[0]}
-            endY={getNodeInfo(downstreamNode).coords[1]+30}
+            startX={getNodeInfo(nodeKey).coords[0]+verticalDelta}
+            startY={getNodeInfo(nodeKey).coords[1]+horizontalDelta}
+            endX={getNodeInfo(downstreamNode).coords[0]+verticalDelta}
+            endY={getNodeInfo(downstreamNode).coords[1]+horizontalDelta}
             sender={nodeKey}
             reciever={downstreamNode}
             onRequestReachEnd={handleRequestReachedEnd}
@@ -58,14 +63,19 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
             newResponses[upstreamNode] = []
                 }
         for (let y = 0; y < upstreamNodeRequests.length; y++) {
-            const id = upstreamNodeRequests[y];
+            let startNode = getNodeInfo(nodeKey)
+            let endNode = getNodeInfo(upstreamNode)
+            let [startX,startY,endX,endY] = [startNode.coords[0],startNode.coords[1],endNode.coords[0],endNode.coords[1]]
+            let horizontalDelta = startX === endX ? 0 : 60
+            let verticalDelta = startY === endY ? 0 : 60
+            let id = upstreamNodeRequests[y];
             let requestObject = <Request
             key={id}
             requestId={id}
-            startX={getNodeInfo(nodeKey).coords[0]}
-            startY={getNodeInfo(nodeKey).coords[1]+60}
-            endX={getNodeInfo(upstreamNode).coords[0]}
-            endY={getNodeInfo(upstreamNode).coords[1]+60}
+            startX={getNodeInfo(nodeKey).coords[0]+verticalDelta}
+            startY={getNodeInfo(nodeKey).coords[1]+horizontalDelta}
+            endX={getNodeInfo(upstreamNode).coords[0]+verticalDelta}
+            endY={getNodeInfo(upstreamNode).coords[1]+horizontalDelta}
             sender={nodeKey}
             reciever={upstreamNode}
             onRequestReachEnd={handleRequestReachedEnd}
