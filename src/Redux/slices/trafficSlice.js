@@ -51,7 +51,6 @@ export const trafficSlice = createSlice({
     },
     recievedRequest: (state,action) => {
       const {from,to,type} = action.payload
-      console.log("the ttype is ", type)
       if(type === "request") {
         if(state.traffic.requests.hasOwnProperty(from) && state.traffic.requests[from].hasOwnProperty(to)) {
           if(state.traffic.requests[from][to].length > 0) {
@@ -68,7 +67,6 @@ export const trafficSlice = createSlice({
           };
           } else {
             const newTraffic = {...state.traffic}
-            console.log("newTraffic")
             delete newTraffic.requests[from][to]
             state.traffic = newTraffic
           }
@@ -89,7 +87,6 @@ export const trafficSlice = createSlice({
           };
           } else {
             const newTraffic = {...state.traffic}
-            console.log("newTraffic")
             delete newTraffic.responses[from][to]
             state.traffic = newTraffic
           }

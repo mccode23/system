@@ -8,11 +8,9 @@ export default function App() {
   // const trafficCounts = useSelector((state) => state.traffic.traffic);
   const [componentList, setComponentList] = useState(
     {
-      "0": {type: "client", coords: [100, 100], parentIds: [], childIds: ["1"]},
+      "0": {type: "client", coords: [900, 100], parentIds: [], childIds: ["1"]},
       "1": {type: "server", coords: [500, 100], parentIds: ["0"], childIds: ["2"]},
-      "2": {type: "server", coords: [800, 100], parentIds: ["1"], childIds: ["3"]},
-      "3": {type: "backend", coords: [1000, 100], parentIds: ["2"], childIds: []},
-      // "3": {type: "backend", coords: [900, 100], parentIds: ["3"], childIds: []},
+      "2": {type: "backend", coords: [500, 500], parentIds: ["2"], childIds: []},
     }
   );
 

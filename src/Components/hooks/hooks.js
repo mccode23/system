@@ -27,9 +27,9 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
             key={id}
             requestId={id}
             startX={getNodeInfo(nodeKey).coords[0]}
-            startY={getNodeInfo(nodeKey).coords[1]}
+            startY={getNodeInfo(nodeKey).coords[1]+30}
             endX={getNodeInfo(downstreamNode).coords[0]}
-            endY={getNodeInfo(downstreamNode).coords[1]}
+            endY={getNodeInfo(downstreamNode).coords[1]+30}
             sender={nodeKey}
             reciever={downstreamNode}
             onRequestReachEnd={handleRequestReachedEnd}
@@ -63,9 +63,9 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
             key={id}
             requestId={id}
             startX={getNodeInfo(nodeKey).coords[0]}
-            startY={getNodeInfo(nodeKey).coords[1]+100}
+            startY={getNodeInfo(nodeKey).coords[1]+60}
             endX={getNodeInfo(upstreamNode).coords[0]}
-            endY={getNodeInfo(upstreamNode).coords[1]+100}
+            endY={getNodeInfo(upstreamNode).coords[1]+60}
             sender={nodeKey}
             reciever={upstreamNode}
             onRequestReachEnd={handleRequestReachedEnd}
@@ -119,10 +119,7 @@ const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses)
         }
     } else {
         dispatch(recievedRequest({"from": from, "to": to, "type": "response"}));
-        if(toNode.parentIds.length === 0) {
-            console.log("thatts tthe end")
-        } else {
-            console.log("go to my parent")
+        if(toNode.parentIds.length !== 0) {
             const parent = toNode.parentIds[0] // some way to determine which node gets request ie pass in parent path
             dispatch(sendRequest({"from": to, "to": parent, "type": "response"}));
         }
