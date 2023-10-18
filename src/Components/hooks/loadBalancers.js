@@ -1,5 +1,5 @@
 const getIndex = () => {
-  let idCounter = 0;
+  let idCounter = -1;
   
 
   return () => {

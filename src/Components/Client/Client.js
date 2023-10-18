@@ -19,6 +19,7 @@ function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
     let childrenIds = getNodeInfo(nodeKey).childIds
     let idx = generateIndex() % childrenIds.length    
     let nextChild = childrenIds[idx]
+    console.log("next chiild is ", nextChild)
     
     dispatch(sendRequest({"from": nodeKey, "to": nextChild, "type": "request"}));
     setTimeout(initClientRequests, 1000); // 1 second
