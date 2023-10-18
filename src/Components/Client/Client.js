@@ -3,6 +3,8 @@ import './Client.css';
 import { useDispatch } from "react-redux";
 import { sendRequest } from "../../Redux/slices/trafficSlice";
 import useShowAnimatedRequest from "../hooks/hooks";
+import { generateIndex } from '../hooks/loadBalancers'
+
 
 function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
   const dispatch = useDispatch();
@@ -14,12 +16,10 @@ function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
   const [animatedRequests,animatedResponses] = useShowAnimatedRequest(nodeKey,getNodeInfo,liveRequests, liveResponses)
 
   const initClientRequests = () => {
-    let children = getNodeInfo(nodeKey).childIds
-    let childId = Math.floor(Math.random() *children.length)
+    let childrenIds = getNodeInfo(nodeKey).childIds
+    let idx = generateIndex() % childrenIds.length    
+    let nextChild = childrenIds[idx]
     
-    let nextChild = children[childId]
-    
-    console.log("childId ", childId)
     dispatch(sendRequest({"from": nodeKey, "to": nextChild, "type": "request"}));
     setTimeout(initClientRequests, 1000); // 1 second
   };

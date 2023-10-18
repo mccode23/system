@@ -2,7 +2,6 @@ import { useState,useEffect } from 'react';
 import Request from '../Request/Request';
 import { useDispatch } from "react-redux";
 import { sendRequest, recievedRequest } from "../../Redux/slices/trafficSlice";
-import { generateUniqueId } from '../utils/utils';
 
 const useShowAnimatedRequest = (nodeKey,getNodeInfo,liveRequests, liveResponses) => {
   const dispatch = useDispatch();
