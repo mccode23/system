@@ -20,6 +20,7 @@ export default function App() {
 
   const liveRequests = useSelector(state => state.traffic.traffic.requests)
   const liveResponses = useSelector(state => state.traffic.traffic.responses)
+  const ingressLoad = useSelector(state => state.traffic.traffic.ingressLoad)
 
   
 
@@ -29,7 +30,7 @@ export default function App() {
         case "client":
             return <Client nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo}></Client>
         case "server":
-            return <Server nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo}></Server>
+            return <Server nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} ingressLoad={ingressLoad[nodeKey]} getNodeInfo={getNodeInfo}></Server>
         case "backend":
           return <Backend nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo}></Backend>
         default:

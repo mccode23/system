@@ -6,7 +6,9 @@ export const trafficSlice = createSlice({
   initialState: {
     traffic: {
       requests: {},
-      responses: {}
+      responses: {},
+      ingressLoad: {},
+      egressLoad: {}
     } 
   },
   reducers: {
@@ -50,8 +52,21 @@ export const trafficSlice = createSlice({
       
     },
     recievedRequest: (state,action) => {
-      const {from,to,type} = action.payload
+      const {from,to,type} = action.payload;
       if(type === "request") {
+        let newToLoad = 0
+        if(state.traffic.ingressLoad.hasOwnProperty(to)) {
+          newToLoad = state.traffic.ingressLoad[to]
+        }
+        // handle load to see if a server is taking too manny reqs
+        state.traffic = {
+          ...state.traffic,
+          ingressLoad: {
+            ...state.traffic.ingressLoad,
+            [to]: newToLoad+1
+          }
+        }
+
         if(state.traffic.requests.hasOwnProperty(from) && state.traffic.requests[from].hasOwnProperty(to)) {
           if(state.traffic.requests[from][to].length > 0) {
           let newArray = state.traffic.requests[from][to].slice(1)
