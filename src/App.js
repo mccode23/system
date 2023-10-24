@@ -18,6 +18,16 @@ export default function App() {
     }
   );
 
+  const updateComponentState = (id,newX,newY) => {
+    setComponentList({
+      ...componentList,
+      [id]: {
+        ...componentList[id], // Copy the existing object inside keyToBeUpdated
+          coords: [newX,newY], // Update the specific array key
+      },
+    });
+  }
+
   const liveRequests = useSelector(state => state.traffic.traffic.requests)
   const liveResponses = useSelector(state => state.traffic.traffic.responses)
   const ingressLoad = useSelector(state => state.traffic.traffic.ingressLoad)
@@ -25,10 +35,10 @@ export default function App() {
   
 
   function getNodeComponent(nodeKey) {
-    const {type} = getNodeInfo(nodeKey);
+    const {type,coords} = getNodeInfo(nodeKey);
     switch (type) {
         case "client":
-            return <Client nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo}></Client>
+            return <Client nodeKey={nodeKey} coords={coords} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} getNodeInfo={getNodeInfo} updateComponentState={updateComponentState}></Client>
         case "server":
             return <Server nodeKey={nodeKey} liveRequests={liveRequests[nodeKey]} liveResponses={liveResponses[nodeKey]} ingressLoad={ingressLoad[nodeKey]} getNodeInfo={getNodeInfo}></Server>
         case "backend":
@@ -49,7 +59,6 @@ export default function App() {
         {getNodeComponent(nodeKey)}
       </div>
     })}
-
     </>
   )
 }

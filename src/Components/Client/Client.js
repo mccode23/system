@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 import { sendRequest } from "../../Redux/slices/trafficSlice";
 import useShowAnimatedRequest from "../hooks/hooks";
 import { generateIndex } from '../hooks/loadBalancers'
+import Draggable from 'react-draggable';
 
 
-function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
+function Client({nodeKey,coords,getNodeInfo,liveRequests, liveResponses, updateComponentState}) {
   const dispatch = useDispatch();
+  const position = coords === undefined ? {x: 0, y:0} : {x:coords[0],y:coords[1]}
 
   useEffect(() => {
     initClientRequests();
@@ -23,11 +25,19 @@ function Client({nodeKey,getNodeInfo,liveRequests, liveResponses}) {
     setTimeout(initClientRequests, 1000); // 1 second
   };
 
+  const handleStop = (e,data) => {
+    updateComponentState(nodeKey,data.x,data.y)
+  }
+
   return (
     <>
-      <div className="client-component-wrapper" style={{ left: `${getNodeInfo(nodeKey).coords[0]}px`, top: `${getNodeInfo(nodeKey).coords[1]}px` }}>
+    <Draggable
+    defaultPosition={position}
+    onStop={handleStop}>
+      <div className="client-component-wrapper">
         Client
       </div>
+    </Draggable>
       {animatedRequests}
       {animatedResponses}
     </>
