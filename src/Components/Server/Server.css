@@ -2,7 +2,7 @@
     width: 100px;
     height: 100px;
     background-color: #A52A2A;
-    position: absolute;
+    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
